@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.pushtalk.android"
-    android:versionCode="21"
-    android:versionName="0.2.1" >
+    android:versionCode="26"
+    android:versionName="0.2.6" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -94,9 +94,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
                 <data android:scheme="package" />
             </intent-filter>
+			<intent-filter android:priority="1000">
+			    <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!--Required 显示通知栏 --> 
+			    <category android:name="org.pushtalk.android" /> 
+			</intent-filter>
         </receiver>
 
         
@@ -119,7 +122,7 @@
 
         <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default" />
-        <meta-data android:name="JPUSH_APPKEY" android:value="7d431e42dfa6a6d693ac2d04" /> <!-- </>值来自开发者平台取得的AppKey -->
+        <meta-data android:name="JPUSH_APPKEY" android:value="7d431e42dfa6a6d693ac2d04" />
         
         <activity
             android:name=".activity.ServerConfActivity"
