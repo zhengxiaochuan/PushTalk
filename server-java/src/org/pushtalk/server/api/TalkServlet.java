@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.pushtalk.server.Config;
 import org.pushtalk.server.model.Channel;
 import org.pushtalk.server.model.Message;
 import org.pushtalk.server.utils.ServiceUtils;
@@ -22,12 +23,10 @@ public class TalkServlet extends FreemarkerBaseServlet {
 	private static final long serialVersionUID = 348660245631638687L;
     private static Logger LOG = Logger.getLogger(TalkServlet.class);
 
-	private static final String JPUSH_USERNAME = "pushtalk";
-	private static final String JPUSH_PASSWORD = "654321";
-	private static final String JPUSH_APPKEY = "7d431e42dfa6a6d693ac2d04";
-	
-	private static int sendId = 0;
-	private static final JPushClient jpushClient = new JPushClient(JPUSH_USERNAME, JPUSH_PASSWORD, JPUSH_APPKEY);
+    // 第次重新启动，会以不同的 sendNo 作为起点，从而避免重复记录
+	private static int sendId = getRandomSendNo();
+	private static final JPushClient jpushClient = new JPushClient(
+	        Config.JPUSH_USERNAME, Config.JPUSH_PASSWORD, Config.JPUSH_APPKEY);
 
 	@Override
 	public void process(HttpServletRequest request,
@@ -111,4 +110,17 @@ public class TalkServlet extends FreemarkerBaseServlet {
         processJSON(response, data);
 	}
 	
+	
+    public static final int MAX = Integer.MAX_VALUE / 2;
+    public static final int MIN = MAX / 2;
+    
+    /**
+     * 保持 sendNo 的唯一性是有必要的
+     * It is very important to keep sendNo unique.
+     * @return sendNo
+     */
+    public static int getRandomSendNo() {
+        return (int) (MIN + Math.random() * (MAX - MIN));
+    }
+    
 }

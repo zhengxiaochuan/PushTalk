@@ -1,11 +1,10 @@
-dist/
 gen/
 bin/
 classes/
 .settings/
 
 *.class
-
+.DS_Store
 # Package Files #
 *.war
 *.ear
